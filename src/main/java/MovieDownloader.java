@@ -34,13 +34,15 @@ public class MovieDownloader {
 		String[] movies = null;
 
 		try {
-
+         // create url
 			URL url = new URL(urlString);
-
+         
+         //get the server connected for http requests 
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.connect();
-
+         
+         //reading and analyze response we got from IMDB API
 			InputStream inputStream = urlConnection.getInputStream();
 			StringBuffer buffer = new StringBuffer();
 			if (inputStream == null) {
@@ -57,6 +59,7 @@ public class MovieDownloader {
 			if (buffer.length() == 0) {
 				return null;
 			}
+         // make data become json format in order to display to users
 			String results = buffer.toString();
 			results = results.replace("{\"Search\":[","");
 			results = results.replace("]}","");
@@ -67,7 +70,7 @@ public class MovieDownloader {
 		catch (IOException e) {
 			return null;
 		} 
-		finally {
+		finally {// disconnect with server and close reader after it finishs reading user's input
 			if (urlConnection != null) {
 				urlConnection.disconnect();
 			}
@@ -89,7 +92,7 @@ public class MovieDownloader {
 		Scanner sc = new Scanner(System.in);
 
 		boolean searching = true;
-
+      // keep ask user to type movie's name until they type "q" to quit
 		while(searching) {					
 			System.out.print("Enter a movie name to search for or type 'q' to quit: ");
 			String searchTerm = sc.nextLine().trim();
